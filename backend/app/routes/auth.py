@@ -9,7 +9,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 
 from app.utils import FASTAPI_SECRET, FRONTEND_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, create_access_token
-from app.models import User
+from app.models import UserBase
 from app.utils import GOOGLE_REDIRECT_URI
 
 router = APIRouter(prefix="/auth", tags=["auth"])
