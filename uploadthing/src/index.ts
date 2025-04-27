@@ -1,39 +1,26 @@
-import { UTApi } from "uploadthing/server";
+import express from "express";
+import cors from "cors"
 
-export const utapi = new UTApi({});
+import { createRouteHandler } from "uploadthing/express";
 
-// Example test upload (commented out):
-// const f = new File(["asdf"], "lol.txt");
-// const res = await utapi.uploadFiles(f);
-// console.log(res);
+import { uploadRouter } from "./uploadthing";
 
-const server = Bun.serve({
-  port: 4000,
-  async fetch(req) {
-    const url = new URL(req.url);
+const app = express();
+app.use(cors())
 
-    // Return index.html for root path
-    if (url.pathname === "/") {
-      return new Response("home");
-    }
+app.use(
+  "/api/uploadthing",
+  createRouteHandler({
+    router: uploadRouter,
+    config: {
+        token: process.env.UPLOADTHING_TOKEN
+    },
+  }),
+);
 
-    if (url.pathname === "/upload") {
-      const formdata = await req.formData();
-      const fileEntry = formdata.get("profilePicture");
+const PORT = 4000
 
-      // Check both null and type
-      if (!(fileEntry instanceof Blob)) {
-        return new Response("Invalid or missing file", { status: 400 });
-      }
-
-      // Safe to upload
-      const uploadRes = await utapi.uploadFiles(fileEntry);
-
-      console.log(uploadRes);
-
-      return new Response("uploaded");
-    }
-
-    return new Response("Not Found", { status: 404 });
-  },
-});
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+  

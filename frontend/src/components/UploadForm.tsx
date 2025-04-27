@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Upload, Check, CloudMoon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UploadButton } from "./UploadButton";
 
 const UploadForm = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -39,7 +40,7 @@ const UploadForm = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setSelectedFile(e.dataTransfer.files[0]);
     }
@@ -47,7 +48,7 @@ const UploadForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!selectedFile) {
       toast({
         title: "No file selected",
@@ -93,7 +94,8 @@ const UploadForm = () => {
             className="bg-sleep-gray/30 border-sleep-purple/20 text-white"
           />
         </div>
-        
+        <UploadButton endpoint={"imageUploader"} />
+
         <div className="space-y-2">
           <Label htmlFor="file-upload" className="text-white">Sleep Recording</Label>
           <div
@@ -103,8 +105,8 @@ const UploadForm = () => {
             onDrop={handleDrop}
             className={cn(
               "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all",
-              dragActive 
-                ? "border-sleep-purple bg-sleep-purple/10" 
+              dragActive
+                ? "border-sleep-purple bg-sleep-purple/10"
                 : "border-sleep-purple/30 hover:border-sleep-purple/60",
               selectedFile ? "bg-sleep-purple/5" : ""
             )}
@@ -116,7 +118,7 @@ const UploadForm = () => {
               accept=".mp3,.wav,.mp4,.aac"
               className="hidden"
             />
-            
+
             <div className="flex flex-col items-center gap-2">
               {selectedFile ? (
                 <>
@@ -141,7 +143,7 @@ const UploadForm = () => {
             </div>
           </div>
         </div>
-        
+
         <Button
           type="submit"
           className="w-full bg-sleep-purple hover:bg-sleep-light-purple text-white"
