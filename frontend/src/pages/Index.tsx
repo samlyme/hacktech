@@ -1,86 +1,89 @@
-import React from "react";
+// import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CloudMoon, Moon, Bed } from "lucide-react";
+import { AudioLines, NotebookIcon, LineChart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CloudCard from "@/components/CloudCard";
-
-// Add animation styles
-const ambientAnimationStyles = {
-  animation: 'moveAround 20s ease-in-out infinite',
-  filter: 'blur(3rem)',
-  willChange: 'transform',
-};
+import StarryBackground from "@/components/StarryBackground";
 
 const Index = () => {
   const features = [
     {
-      icon: <CloudMoon className="h-8 w-8 text-sleep-purple" />,
-      title: "Sleep Pattern Analysis",
-      description: "Discover patterns and trends in your sleep recordings with advanced audio processing."
+      icon: <AudioLines className="h-8 w-8 text-sleep-purple" />,
+      title: "Audio to Answers",
+      description:
+        "Transform smartphone audio into powerful sleep health diagnostics, detecting breathing abnormalities and snoring patterns."
     },
     {
-      icon: <Moon className="h-8 w-8 text-sleep-purple" />,
-      title: "Quality Assessment",
-      description: "Get detailed insights about your sleep quality, including snoring detection and sleep disturbances."
+      icon: <LineChart className="h-8 w-8 text-sleep-purple" />,
+      title: "Sleep Insights",
+      description:
+        "Analyze your sleep evolution, spot apnea risk patterns, and quantify improvements from CPAP therapy or lifestyle modifications.",
     },
     {
-      icon: <Bed className="h-8 w-8 text-sleep-purple" />,
-      title: "Personalized Recommendations",
-      description: "Receive tailored suggestions to improve your sleep based on your recording analysis."
-    }
+      icon: <NotebookIcon className="h-8 w-8 text-sleep-purple" />,
+      title: "Clinical Collaboration",
+      description:
+        "Sleep analytics delivered as a professional PDF report for seamless physician collaboration and expedited clinical assessment.",
+    },
   ];
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      {/* Animated background blobs */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute top-[-6rem] left-[-6rem] w-96 h-96 bg-sleep-purple/30 rounded-full blur-3xl animate-ambient-1" />
-        <div className="absolute bottom-[-8rem] right-[-8rem] w-[32rem] h-[32rem] bg-sleep-soft-blue/30 rounded-full blur-3xl animate-ambient-2" />
-        {/* Extra blobs for more organic movement */}
-        <div className="absolute top-[30%] left-[10%] w-80 h-80 bg-sleep-light-purple/20 rounded-full blur-3xl animate-ambient-3" style={{ animationDelay: '10s' }} />
-        <div className="absolute bottom-[20%] right-[30%] w-72 h-72 bg-sleep-sky-blue/20 rounded-full blur-3xl animate-ambient-4" style={{ animationDelay: '20s' }} />
-      </div>
+      <StarryBackground />
       <Navbar />
-      
+
       <main className="flex-grow">
         <section className="relative py-20 md:py-32 overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center gap-12">
               <div className="md:w-1/2 space-y-6 text-center md:text-left">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Rest <span className="text-sleep-purple">Assured</span>
+                 <span className="text-sleep-purple">Skip</span> the sleep study
                 </h1>
                 <p className="text-lg text-white/80 max-w-xl">
-                  Transform your home sleep data into valuable insights with our specialized analysis that detects sleep apnea patterns in minutes
+                  Nea analyzes your overnight sleep sounds using advanced deep learning technology, identifying potential sleep apnea episodes from the comfort of your home. Get valuable insights at home before committing to overnight lab studies.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                   <Link to="/upload">
-                    <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white">
+                    <Button
+                      size="lg"
+                      className="bg-sleep-purple hover:bg-sleep-light-purple text-white"
+                    >
                       Upload Recording
                     </Button>
                   </Link>
                   <Link to="/dashboard">
-                    <Button variant="outline" size="lg" className="border-sleep-purple/40 text-sleep-purple hover:bg-sleep-purple/10">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="border-sleep-purple/40 text-sleep-purple hover:bg-sleep-purple/10"
+                    >
                       View Dashboard
                     </Button>
                   </Link>
                 </div>
               </div>
-              
+
               <div className="md:w-1/2 relative">
                 <div className="relative p-1 rounded-2xl bg-gradient-to-br from-sleep-purple/30 to-sleep-soft-blue/30">
-                  <div className="bg-sleep-dark-purple rounded-xl overflow-hidden backdrop-blur-sm">
+                  <div className="bg-sleep-dark-purple/70 rounded-xl overflow-hidden backdrop-blur-sm">
                     <div className="p-6 bg-gradient-to-br from-transparent to-sleep-purple/5">
                       <div className="flex justify-between items-center mb-6">
                         <div>
-                          <h3 className="text-xl font-semibold text-white">Last Night's Sleep</h3>
-                          <p className="text-white/60 text-sm">April 25, 2025</p>
+                          <h3 className="text-xl font-semibold text-white">
+                            Last Night's Sleep
+                          </h3>
+                          <p className="text-white/60 text-sm">
+                            April 25, 2025
+                          </p>
                         </div>
-                        <span className="text-2xl font-bold text-sleep-purple">82%</span>
+                        <span className="text-2xl font-bold text-sleep-purple">
+                          231 total episodes
+                        </span>
                       </div>
-                      
+
                       <div className="space-y-4">
                         <div>
                           <div className="h-20 w-full overflow-hidden">
@@ -109,19 +112,25 @@ const Index = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-3 gap-2 text-center">
                           <div className="bg-sleep-purple/10 rounded-lg p-3">
-                            <p className="text-white/60 text-xs mb-1">Duration</p>
-                            <p className="text-white font-medium">7.2 hrs</p>
+                            <p className="text-white/60 text-xs mb-1">
+                              Snoring
+                            </p>
+                            <p className="text-white font-medium">15 per hour</p>
                           </div>
                           <div className="bg-sleep-purple/10 rounded-lg p-3">
-                            <p className="text-white/60 text-xs mb-1">Snoring</p>
-                            <p className="text-white font-medium">12 min</p>
+                            <p className="text-white/60 text-xs mb-1">
+                              Breath Obstructions
+                            </p>
+                            <p className="text-white font-medium">18 per hour</p>
                           </div>
                           <div className="bg-sleep-purple/10 rounded-lg p-3">
-                            <p className="text-white/60 text-xs mb-1">Disruptions</p>
-                            <p className="text-white font-medium">2 times</p>
+                            <p className="text-white/60 text-xs mb-1">
+                              Total Episodes
+                            </p>
+                            <p className="text-white font-medium">33 per hour</p>
                           </div>
                         </div>
                       </div>
@@ -132,18 +141,18 @@ const Index = () => {
             </div>
           </div>
         </section>
-        
-        <section className="py-20 bg-sleep-charcoal">
+
+        <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Unlock the Secrets of Your Sleep
+                A sleep lab in your pocket
               </h2>
               <p className="text-white/70 max-w-2xl mx-auto">
-                Our advanced technology analyzes your sleep recordings to provide meaningful insights and actionable recommendations.
+                Sleep labs are uncomfortable. Your best sleep analysis happens where you sleep best.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
                 <CloudCard key={index} className="bg-sleep-dark-purple/70">
@@ -151,7 +160,9 @@ const Index = () => {
                     <div className="w-16 h-16 rounded-full bg-sleep-purple/10 flex items-center justify-center mb-4">
                       {feature.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
+                    <h3 className="text-xl font-semibold text-white mb-3">
+                      {feature.title}
+                    </h3>
                     <p className="text-white/70">{feature.description}</p>
                   </div>
                 </CloudCard>
@@ -159,19 +170,66 @@ const Index = () => {
             </div>
           </div>
         </section>
-        
+
         <section className="py-20 relative">
           <div className="container mx-auto px-4">
-            <div className="cloud-card bg-sleep-charcoal/70 max-w-3xl mx-auto">
+            <div className="cloud-card bg-sleep-dark-purple/70 max-w-3xl mx-auto">
               <div className="py-10 px-6 text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 rounded-full bg-sleep-purple/20 flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-sleep-purple"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                    </svg>
+                  </div>
+                </div>
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Ready to Improve Your Sleep?
+                  Track Apneic Episodes
                 </h2>
                 <p className="text-white/70 mb-8 max-w-lg mx-auto">
-                  Start tracking and analyzing your sleep patterns today. Upload your first recording and discover insights that can transform your rest.
+                  Sleep apnea occurs when breathing repeatedly stops and starts during sleep. Our advanced AI analyzes your sleep sounds to detect these episodes, classifying them by severity and duration. We track patterns over time, helping you and your healthcare provider understand your sleep health better.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Detection</h3>
+                    <p className="text-white/70 text-sm">Advanced audio analysis identifies breathing pauses and irregularities</p>
+                  </div>
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Classification</h3>
+                    <p className="text-white/70 text-sm">Episodes are categorized by severity and duration for accurate tracking</p>
+                  </div>
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Patterns</h3>
+                    <p className="text-white/70 text-sm">Long-term analysis reveals trends and potential risk factors</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 relative">
+          <div className="container mx-auto px-4">
+            <div className="cloud-card bg-sleep-dark-purple/70 max-w-3xl mx-auto">
+              <div className="py-10 px-6 text-center">
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Sleep Answers Await
+                </h2>
+                <p className="text-white/70 mb-8 max-w-lg mx-auto">
+                  Get answers with one overnight recording upload. Receive easy-to-share screening results that help you and your doctor make informed decisions about sleep apnea.
                 </p>
                 <Link to="/upload">
-                  <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white">
+                  <Button
+                    size="lg"
+                    className="bg-sleep-purple hover:bg-sleep-light-purple text-white"
+                  >
                     Get Started Now
                   </Button>
                 </Link>
@@ -180,7 +238,7 @@ const Index = () => {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

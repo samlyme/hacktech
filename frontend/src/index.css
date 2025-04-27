@@ -48,11 +48,11 @@
   .cloud-card {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl shadow-lg;
   }
-  
+
   .cloud-button {
     @apply bg-gradient-to-r from-sleep-purple to-sleep-light-purple hover:opacity-90 transition-all;
   }
-  
+
   .wave-bottom {
     position: absolute;
     bottom: 0;
@@ -61,18 +61,15 @@
     overflow: hidden;
     line-height: 0;
   }
-  
+
   .wave-bottom svg {
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
     height: 150px;
   }
-  
+
   .wave-bottom .shape-fill {
     fill: rgba(155, 135, 245, 0.2);
   }
 }
-
-#lala
-#test

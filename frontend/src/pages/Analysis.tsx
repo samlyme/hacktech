@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnalysisChart from "@/components/AnalysisChart";
@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Moon, Bed, CloudMoon } from "lucide-react";
+import StarryBackground from "@/components/StarryBackground";
 
 const Analysis = () => {
   const { id } = useParams<{ id: string }>();
@@ -87,7 +88,8 @@ const Analysis = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      <StarryBackground />
       <Navbar />
       
       <main className="flex-grow py-12">
