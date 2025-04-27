@@ -80,7 +80,7 @@ const Index = () => {
                           </p>
                         </div>
                         <span className="text-2xl font-bold text-sleep-purple">
-                          82%
+                          231 total episodes
                         </span>
                       </div>
 
@@ -116,21 +116,21 @@ const Index = () => {
                         <div className="grid grid-cols-3 gap-2 text-center">
                           <div className="bg-sleep-purple/10 rounded-lg p-3">
                             <p className="text-white/60 text-xs mb-1">
-                              Duration
-                            </p>
-                            <p className="text-white font-medium">7.2 hrs</p>
-                          </div>
-                          <div className="bg-sleep-purple/10 rounded-lg p-3">
-                            <p className="text-white/60 text-xs mb-1">
                               Snoring
                             </p>
-                            <p className="text-white font-medium">12 min</p>
+                            <p className="text-white font-medium">15 per hour</p>
                           </div>
                           <div className="bg-sleep-purple/10 rounded-lg p-3">
                             <p className="text-white/60 text-xs mb-1">
-                              Disruptions
+                              Breath Obstructions
                             </p>
-                            <p className="text-white font-medium">2 times</p>
+                            <p className="text-white font-medium">18 per hour</p>
+                          </div>
+                          <div className="bg-sleep-purple/10 rounded-lg p-3">
+                            <p className="text-white/60 text-xs mb-1">
+                              Total Episodes
+                            </p>
+                            <p className="text-white font-medium">33 per hour</p>
                           </div>
                         </div>
                       </div>
@@ -167,6 +167,50 @@ const Index = () => {
                   </div>
                 </CloudCard>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 relative">
+          <div className="container mx-auto px-4">
+            <div className="cloud-card bg-sleep-dark-purple/70 max-w-3xl mx-auto">
+              <div className="py-10 px-6 text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 rounded-full bg-sleep-purple/20 flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-sleep-purple"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                    </svg>
+                  </div>
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Track Apneic Episodes
+                </h2>
+                <p className="text-white/70 mb-8 max-w-lg mx-auto">
+                  Sleep apnea occurs when breathing repeatedly stops and starts during sleep. Our advanced AI analyzes your sleep sounds to detect these episodes, classifying them by severity and duration. We track patterns over time, helping you and your healthcare provider understand your sleep health better.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Detection</h3>
+                    <p className="text-white/70 text-sm">Advanced audio analysis identifies breathing pauses and irregularities</p>
+                  </div>
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Classification</h3>
+                    <p className="text-white/70 text-sm">Episodes are categorized by severity and duration for accurate tracking</p>
+                  </div>
+                  <div className="bg-sleep-purple/10 rounded-lg p-4">
+                    <h3 className="text-sleep-purple font-semibold mb-2">Patterns</h3>
+                    <p className="text-white/70 text-sm">Long-term analysis reveals trends and potential risk factors</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
