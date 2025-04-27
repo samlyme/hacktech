@@ -7,6 +7,7 @@ import { UploadButton } from "./UploadButton";
 import { createRecordingRecordingsPost } from "@/client";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { inferInferencePost } from "@/inference";
 
 const UploadForm = () => {
   const date = new Date()
@@ -44,8 +45,17 @@ const UploadForm = () => {
               file_url: fileUrl,
             }
           })
-          console.log(thing);
-          navigate("/dashboard")
+          console.log("thing", thing);
+          const inf = await inferInferencePost({
+            body: {
+              file_url: thing.data.file_url,
+              name: thing.data.name,
+              id: thing.data.id
+            }
+          })
+          console.log('inf', inf);
+
+          // navigate("/dashboard")
         }}
       />
 
