@@ -16,7 +16,7 @@ app.add_middleware(
 
 app.include_router(users.router)
 app.include_router(token.router)
-app.include_router(uploadthing.router)
+# app.include_router(uploadthing.router)
 
 @app.on_event("startup")
 def on_startup():
