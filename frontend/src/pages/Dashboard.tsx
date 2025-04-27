@@ -6,61 +6,41 @@ import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import AnalysisChart from "@/components/AnalysisChart";
 import StarryBackgroundSimple from "@/components/StarryBackgroundSimple";
+import { getRecordingsRecordingsGet } from "@/client";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const { token } = useAuth()
+  console.log("token", token);
+
   // Sample data for recordings
-  const recordings = [
-    {
-      id: "rec1",
-      title: "Last Night's Sleep",
-      date: "April 25, 2025",
-      duration: 7.2,
-      quality: 82,
-    },
-    {
-      id: "rec2",
-      title: "Nap After Work",
-      date: "April 24, 2025",
-      duration: 1.5,
-      quality: 68,
-    },
-    {
-      id: "rec3",
-      title: "Night with Storm",
-      date: "April 23, 2025",
-      duration: 6.8,
-      quality: 62,
-    },
-    {
-      id: "rec4",
-      title: "Regular Night",
-      date: "April 22, 2025",
-      duration: 8.1,
-      quality: 91,
-    },
-  ];
+  const [data, setData] = useState<any>([]); // Store fetched data
+  const [loading, setLoading] = useState<boolean>(true); // Track loading state
+  const [error, setError] = useState<string | null>(null); // Track errors
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getRecordingsRecordingsGet({
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }); // Change URL as needed
+        console.log("received", response);
+        setData(response.data);
+      } catch (err) {
+        setError("Error fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [])
 
   // Sample data for charts
-  const sleepQualityData = [
-    { time: "Apr 19", value: 78 },
-    { time: "Apr 20", value: 85 },
-    { time: "Apr 21", value: 89 },
-    { time: "Apr 22", value: 91 },
-    { time: "Apr 23", value: 62 },
-    { time: "Apr 24", value: 68 },
-    { time: "Apr 25", value: 82 },
-  ];
-
-  const sleepDurationData = [
-    { time: "Apr 19", value: 6.9 },
-    { time: "Apr 20", value: 7.5 },
-    { time: "Apr 21", value: 7.8 },
-    { time: "Apr 22", value: 8.1 },
-    { time: "Apr 23", value: 6.8 },
-    { time: "Apr 24", value: 1.5 },
-    { time: "Apr 25", value: 7.2 },
-  ];
-
+  const sleepQualityData = [37, 36, 36, 36, 36, 36, 36, 36, 36, 33];
+  // if (loading) return <div>Loading...</div>;
   return (
     <div className="min-h-screen flex flex-col">
       <StarryBackgroundSimple />
@@ -77,13 +57,6 @@ const Dashboard = () => {
                 Track and analyze your sleep recordings
               </p>
             </div>
-
-            <Link to="/upload">
-              <Button className="bg-sleep-purple hover:bg-sleep-light-purple text-white">
-                <Plus className="h-4 w-4 mr-2" />
-                New Recording
-              </Button>
-            </Link>
           </div>
 
           {/* Charts Section */}
@@ -93,11 +66,6 @@ const Dashboard = () => {
               title="Sleep Quality Trend"
               color="#9b87f5"
             />
-            <AnalysisChart
-              data={sleepDurationData}
-              title="Sleep Duration (hours)"
-              color="#33C3F0"
-            />
           </div>
 
           {/* Recordings Section */}
@@ -106,12 +74,12 @@ const Dashboard = () => {
               Recent Recordings
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {recordings.map((recording) => (
-                <SleepRecordingCard
-                  key={recording.id}
-                  id={recording.id}
-                  title={recording.title}
-                  date={recording.date}
+              {data.map((recording) => (
+                // console.log(recording)
+
+                <SleepRecordingCard key={recording.id} id={recording.id}
+                  title={recording.name}
+                  date={recording.created_at}
                   duration={recording.duration}
                   quality={recording.quality}
                 />

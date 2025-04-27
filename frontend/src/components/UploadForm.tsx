@@ -9,7 +9,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const UploadForm = () => {
-  const [recordingName, setRecordingName] = useState("");
+  const date = new Date()
+  const [recordingName, setRecordingName] = useState(date.toDateString());
   const { token } = useAuth()
   const navigate = useNavigate()
 
