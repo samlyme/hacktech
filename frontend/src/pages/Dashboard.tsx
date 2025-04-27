@@ -67,35 +67,10 @@ const Dashboard = () => {
               title="Overall Noise Level"
               color="#9b87f5"
             />
-<<<<<<< HEAD
-  {/* Data at a Glance Card */ }
-  <div className="bg-sleep-charcoal border-sleep-purple/20 rounded-lg p-6 flex flex-col justify-center">
-    <h3 className="text-lg font-semibold text-white mb-4">Data at a Glance</h3>
-    <div className="grid grid-cols-2 gap-4">
-      <div>
-        <div className="text-sleep-purple text-sm font-medium mb-1">Snoring Events</div>
-        <div className="text-white text-2xl font-bold">{snoringEvents}</div>
-      </div>
-      <div>
-        <div className="text-sleep-purple text-sm font-medium mb-1">Obstructed Breath Events</div>
-        <div className="text-white text-2xl font-bold">{breathEvents}</div>
-      </div>
-      <div>
-        <div className="text-sleep-purple text-sm font-medium mb-1">Events/Hour</div>
-        <div className="text-white text-2xl font-bold">{eventsPerHour}</div>
-      </div>
-      <div>
-        <div className="text-sleep-purple text-sm font-medium mb-1">AHI</div>
-        <div className="text-white text-2xl font-bold">{severity}</div>
-      </div>
-    </div>
-  </div>
-=======
->>>>>>> dev-final
           </div >
 
-  {/* Recordings Section */ }
-  < section >
+          {/* Recordings Section */}
+          < section >
             <h2 className="text-2xl font-semibold text-white mb-6">
               Recent Recordings
             </h2>
@@ -115,7 +90,7 @@ const Dashboard = () => {
         </div >
       </main >
 
-  <Footer />
+      <Footer />
     </div >
   );
 };
