@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CloudMoon } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 const Navbar: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const Navbar: React.FC = () => {
           <CloudMoon className="h-8 w-8 text-sleep-purple" />
           <span className="font-bold text-xl text-white">Nea</span>
         </Link>
-        
+
         <div className="hidden md:flex gap-6 items-center">
           <Link to="/" className="text-white/80 hover:text-white transition-colors">
             Home
@@ -23,7 +24,7 @@ const Navbar: React.FC = () => {
             Upload
           </Link>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <Link to="/upload">
             <Button className="bg-sleep-purple hover:bg-sleep-light-purple text-white">
@@ -35,6 +36,7 @@ const Navbar: React.FC = () => {
               Sign In
             </Button>
           </Link>
+          <LogoutButton />
         </div>
       </div>
     </nav>

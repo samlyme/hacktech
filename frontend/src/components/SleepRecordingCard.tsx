@@ -22,16 +22,25 @@ const SleepRecordingCard = ({
   AHI,
   className,
 }: SleepRecordingCardProps) => {
+<<<<<<< HEAD
   const ahiColor = 
     AHI >= 80 ? "bg-red-500" : 
     AHI >= 60 ? "bg-yellow-500" : 
     "bg-green-500";
   
+=======
+  const qualityColor =
+    quality >= 80 ? "bg-green-500" :
+      quality >= 60 ? "bg-yellow-500" :
+        "bg-red-500";
+
+>>>>>>> dev-final
   return (
     <Card className={cn(
       "overflow-hidden bg-sleep-charcoal border border-sleep-purple/20 hover:border-sleep-purple/40 transition-all",
       className
     )}>
+<<<<<<< HEAD
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -70,6 +79,9 @@ const SleepRecordingCard = ({
           </Button>
         </Link>
       </div>
+=======
+      <h1>{title}</h1>
+>>>>>>> dev-final
     </Card>
   );
 };

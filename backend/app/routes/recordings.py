@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import select
+from sqlmodel import asc, select
 
 from app.model import Recording, RecordingBase, RecordingUpdate, User
 from app.utils import get_current_user
@@ -37,7 +37,7 @@ async def get_recordings(
     current_user: Annotated[User, Depends(get_current_user)],
     session: SessionDep
 ):
-    statement = select(Recording).where(Recording.user_id == current_user.id)
+    statement = select(Recording).where(Recording.user_id == current_user.id).order_by(asc(Recording.created_at))
     return session.exec(statement).all()
 
 @router.patch("/{id}", response_model=Recording)
