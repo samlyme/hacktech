@@ -22,4 +22,5 @@ rad.json
 TestResults.xml
 .env
 .venv
+signal.csv
 __pycache__
