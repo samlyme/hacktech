@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -10,7 +9,7 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <CloudMoon className="h-8 w-8 text-sleep-purple" />
-          <span className="font-bold text-xl text-white">SleepyCloud</span>
+          <span className="font-bold text-xl text-white">Nea</span>
         </Link>
         
         <div className="hidden md:flex gap-6 items-center">
@@ -29,6 +28,11 @@ const Navbar: React.FC = () => {
           <Link to="/upload">
             <Button className="bg-sleep-purple hover:bg-sleep-light-purple text-white">
               Upload Recording
+            </Button>
+          </Link>
+          <Link to="/sign-in">
+            <Button variant="outline" className="border-sleep-purple/40 text-sleep-purple hover:bg-sleep-purple/10">
+              Sign In
             </Button>
           </Link>
         </div>

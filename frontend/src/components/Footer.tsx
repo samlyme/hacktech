@@ -1,4 +1,3 @@
-
 import { CloudMoon } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -11,7 +10,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <CloudMoon className="h-6 w-6 text-sleep-purple" />
-            <span className="font-bold text-lg text-white">SleepyCloud</span>
+            <span className="font-bold text-lg text-white">Nea</span>
           </div>
           
           <div className="flex flex-col md:flex-row gap-6 mb-4 md:mb-0 items-center">
@@ -27,7 +26,7 @@ const Footer = () => {
           </div>
           
           <div className="text-white/50 text-sm">
-            &copy; {year} SleepyCloud. All rights reserved.
+            &copy; {year} Nea. All rights reserved.
           </div>
         </div>
       </div>
