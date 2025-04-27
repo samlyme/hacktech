@@ -1,12 +1,6 @@
-from datetime import timedelta
-from typing import Annotated
+from fastapi import FastAPI
 
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-
-from app.model import Token
-from app.utils import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token
-from app.db import SessionDep, create_db_and_tables
+from app.db import create_db_and_tables
 
 from app.routes import users, token
 
