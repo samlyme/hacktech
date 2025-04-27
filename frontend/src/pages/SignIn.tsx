@@ -3,11 +3,32 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { signIn } from "@/services/auth";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const handleSignInClick = async () => {
+    if (!username || !password) {
+      return;
+    }
 
+
+    console.log("clicked");
+
+    try {
+      const access_token = await signIn(username, password);
+      console.log(access_token);
+
+      // Optionally, redirect user to a protected route
+      // For example: history.push('/dashboard');
+    } catch (err) {
+      console.error(err)
+    } finally {
+      console.log('done');
+
+    }
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -31,7 +52,7 @@ const SignIn = () => {
               className="mb-4 w-64 px-4 py-2 rounded bg-sleep-dark-purple/60 border border-sleep-purple/30 text-white focus:outline-none focus:ring-2 focus:ring-sleep-purple"
               autoComplete="current-password"
             />
-            <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white w-64 mb-2">
+            <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white w-64 mb-2" onClick={handleSignInClick}>
               Sign in
             </Button>
           </form>
@@ -46,4 +67,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn; 
+export default SignIn;
