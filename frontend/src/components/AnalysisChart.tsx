@@ -19,6 +19,7 @@ interface AnalysisChartProps {
   title: string;
   className?: string;
   color?: string;
+  // data: propData, // Ignore data prop for now
 }
 
 interface DataPoint {
@@ -47,26 +48,73 @@ const AnalysisChart = ({
   title,
   className,
   color = "#9b87f5",
+  // data: propData, // Ignore data prop for now
 }: AnalysisChartProps) => {
   const [data, setData] = useState<DataPoint[]>([]);
   const [events, setEvents] = useState<EventPoint[]>([]);
 
+  // Hardcoded loading of signal.json
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('/signal.json');
+        const json = await response.json();
+        // json should be an array of objects with mic, nasal, resp, (optionally Tracheal)
+        // Each entry represents one second
+        const parsedData = json.map((row: any, index: number) => {
+          // Handle both capitalized and lowercase field names
+          const micRaw = row.mic !== undefined ? row.mic : row.Mic;
+          const nasalRaw = row.nasal !== undefined ? row.nasal : row.Nasal;
+          const respRaw = row.resp !== undefined ? row.resp : row.Resp;
+          const mic = typeof micRaw === 'number' ? micRaw : parseFloat(micRaw);
+          const nasal = typeof nasalRaw === 'number' ? nasalRaw : parseFloat(nasalRaw);
+          const resp = typeof respRaw === 'number' ? respRaw : parseFloat(respRaw);
+          const timeMinutes = index / 60;
+          return {
+            timeMinutes,
+            displayTime: formatMinutes(timeMinutes),
+            mic: isNaN(mic) ? 0 : mic,
+            nasal: isNaN(nasal) ? 0 : nasal,
+            resp: isNaN(resp) ? 0 : resp,
+          };
+        });
+        console.log('First 5 parsed data points:', parsedData.slice(0, 5));
+        setData(parsedData);
+
+        // Event detection (same as before)
+        if (type === 'nasal' || type === 'resp') {
+          const eventPoints: EventPoint[] = [];
+          let lastEventIndex = -10;
+          parsedData.forEach((point, idx) => {
+            const val = point[type];
+            if (Math.abs(val - 1.0) < 0.0001 && idx - lastEventIndex >= 10) {
+              eventPoints.push({
+                timeMinutes: point.timeMinutes,
+                displayTime: point.displayTime,
+                value: point.mic
+              });
+              lastEventIndex = idx;
+            }
+          });
+          setEvents(eventPoints);
+        }
+      } catch (error) {
+        console.error('Error loading signal.json:', error);
+      }
+    };
+    loadData();
+  }, [type]);
+
   // Sample data to reduce number of points
   const sampledData = useMemo(() => {
     if (data.length === 0) return [];
-    
-    // Take every 200th point to reduce data density (increased from 50)
     const sampleRate = 200;
     const sampled = data.filter((_, index) => index % sampleRate === 0);
-
-    // Apply simple moving average smoothing
     const smoothingWindow = 3;
     const smoothed = sampled.map((point, index) => {
       if (index < smoothingWindow - 1 || index >= sampled.length - smoothingWindow + 1) {
-        return point; // Keep edge points as is
+        return point;
       }
-
-      // Calculate average of surrounding points
       let sum = 0;
       for (let i = index - Math.floor(smoothingWindow/2); i <= index + Math.floor(smoothingWindow/2); i++) {
         sum += sampled[i].mic;
@@ -76,74 +124,52 @@ const AnalysisChart = ({
         mic: sum / smoothingWindow
       };
     });
-
-    console.log('Sampled and smoothed data first few points:', JSON.stringify(smoothed.slice(0, 5)));
+    console.log('Sampled and smoothed data first 5:', smoothed.slice(0, 5));
     return smoothed;
   }, [data]);
 
   // Normalize mic values to 0-100 scale
   const normalizedData = useMemo(() => {
     if (sampledData.length === 0) return [];
-    
-    // Find min and max values
     const values = sampledData.map(d => d.mic);
     const min = Math.min(...values);
     const max = Math.max(...values);
-    
-    // Find time range
-    const timeMin = Math.min(...sampledData.map(d => d.timeMinutes));
-    const timeMax = Math.max(...sampledData.map(d => d.timeMinutes));
-    console.log('Time range:', { min: timeMin, max: timeMax });
-    
-    // Normalize to 0-100 scale with some padding
-    const normalized = sampledData.map(d => {
-      const normalizedValue = Math.min(100, Math.max(0, ((d.mic - min) / (max - min)) * 90 + 5));
-      // Check if this point has an event
-      const hasEvent = type !== 'mic' && events.some(e => Math.abs(e.timeMinutes - d.timeMinutes) < 0.1);
-      
-      return {
-        ...d,
-        mic: normalizedValue,
-        isEvent: hasEvent
-      };
-    });
-    
-    console.log('Normalized data first few points:', JSON.stringify(normalized.slice(0, 5)));
+    let normalized;
+    if (max === min) {
+      // All values are the same, set to 50%
+      normalized = sampledData.map(d => ({ ...d, mic: 50, isEvent: false }));
+    } else {
+      normalized = sampledData.map(d => {
+        const normalizedValue = Math.min(100, Math.max(0, ((d.mic - min) / (max - min)) * 90 + 5));
+        const hasEvent = type !== 'mic' && events.some(e => Math.abs(e.timeMinutes - d.timeMinutes) < 0.1);
+        return {
+          ...d,
+          mic: normalizedValue,
+          isEvent: hasEvent
+        };
+      });
+    }
+    console.log('Normalized data first 5:', normalized.slice(0, 5));
     return normalized;
   }, [sampledData, events, type]);
 
   // Sample and normalize events to match data sampling
   const normalizedEvents = useMemo(() => {
     if (events.length === 0) return [];
-    
-    console.log('Original events:', JSON.stringify(events.slice(0, 5)));
-    console.log('Event time range:', {
-      min: Math.min(...events.map(e => e.timeMinutes)),
-      max: Math.max(...events.map(e => e.timeMinutes))
-    });
-    
-    // Find min and max values from sampled data for consistent normalization
-    const values = sampledData.map(d => d.mic);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-
-    // For each event, find the closest data point and use its mic value
+    // For each event, find the closest normalizedData point and use its mic value
     const normalized = events.map(event => {
-      const closestPoint = sampledData.reduce((prev, curr) => {
+      const closestPoint = normalizedData.reduce((prev, curr) => {
         return Math.abs(curr.timeMinutes - event.timeMinutes) < Math.abs(prev.timeMinutes - event.timeMinutes) ? curr : prev;
       });
-      
       return {
         timeMinutes: event.timeMinutes,
         displayTime: event.displayTime,
-        value: ((closestPoint.mic - min) / (max - min)) * 90 + 5 // Use same normalization as the line
+        value: closestPoint ? closestPoint.mic : 50 // fallback to 50 if not found
       };
     });
-
-    console.log('Normalized events:', JSON.stringify(normalized.slice(0, 5)));
-    
+    console.log('Normalized events first 5:', normalized.slice(0, 5));
     return normalized;
-  }, [events, sampledData]);
+  }, [events, normalizedData]);
 
   // Get event marker color based on type
   const getEventColor = () => {
@@ -168,84 +194,6 @@ const AnalysisChart = ({
         return '';
     }
   };
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetch('/signal_compressed_total.csv');
-        const csvText = await response.text();
-        const rows = csvText.split('\n').slice(1); // Skip header row
-        
-        // Calculate total duration in hours
-        const totalSeconds = rows.length - 1; // -1 for header
-        const totalHours = totalSeconds / 3600;
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        console.log(`Recording duration: ${totalSeconds} seconds (${hours}:${minutes.toString().padStart(2, '0')} hours)`);
-        
-        // Generate timestamps starting from 00:00:00
-        const parsedData = rows.map((row, index) => {
-          // File format is: Tracheal,Mic,nasal,resp
-          const columns = row.split(',');
-          if (columns.length !== 4) return null;
-
-          const [tracheal, mic, nasal, resp] = columns.map(val => {
-            const num = parseFloat(val);
-            return isNaN(num) ? 0 : num;
-          });
-          
-          const seconds = index;
-          const timeMinutes = seconds / 60;
-          
-          return {
-            timeMinutes,
-            displayTime: formatMinutes(timeMinutes),
-            mic,
-            nasal,
-            resp
-          };
-        }).filter(Boolean);
-        
-        setData(parsedData);
-
-        // Update Analysis.tsx with correct duration
-        const actualDuration = totalHours;
-        console.log('Please update duration in Analysis.tsx to:', actualDuration.toFixed(2), 'hours');
-
-        // Process events based on type
-        if (type === 'nasal' || type === 'resp') {
-          const eventPoints: EventPoint[] = [];
-          let lastEventIndex = -10; // Minimum gap between events
-          
-          // Look for exact 1.0 values and create event markers
-          parsedData.forEach((point, idx) => {
-            const val = point[type];
-            // Look for exact 1.0 values with some spacing between markers
-            if (Math.abs(val - 1.0) < 0.0001 && idx - lastEventIndex >= 10) {
-              // Add the event point
-              eventPoints.push({
-                timeMinutes: point.timeMinutes,
-                displayTime: point.displayTime,
-                value: point.mic  // Use mic value for y-coordinate to match the line
-              });
-              lastEventIndex = idx;
-            }
-          });
-
-          console.log(`${type} events found:`, eventPoints.length);
-          if (eventPoints.length > 0) {
-            console.log(`First few ${type} events:`, eventPoints.slice(0, 5));
-          }
-          
-          setEvents(eventPoints);
-        }
-      } catch (error) {
-        console.error('Error loading CSV data:', error);
-      }
-    };
-
-    loadData();
-  }, [type]);
 
   // Log when rendering
   console.log('Chart type:', type);

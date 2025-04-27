@@ -1,24 +1,66 @@
-// @ts-nocheck
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import AnalysisChart from "@/components/AnalysisChart";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Download, Moon, Bed, CloudMoon } from "lucide-react";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import AnalysisChart from '@/components/AnalysisChart';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Download, Moon, Bed, CloudMoon } from 'lucide-react';
 
-const Analysis = () => {
-  const { id } = useParams<{ id: string }>();
-  
-  // Sample data for the analysis
-  const duration = 4.97; // Updated from CSV data (17,891 seconds)
-  const totalEvents = 492; // 71 snoring + 421 breath events
-  const eventsPerHour = (totalEvents / duration).toFixed(1);
+interface AnalysisData {
+  id: string;
+  duration: number;
+  totalEvents: number;
+  eventsPerHour: number;
+  severity: string;
+  events: {
+    snoring: number;
+    breath: number;
+  };
+}
 
-  const [jsonData, setJsonData] = useState<any[] | null>(null);
-  const [fileError, setFileError] = useState<string | null>(null);
+const AnalysisPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchAnalysis = async () => {
+      try {
+        const response = await fetch(`/api/analysis/${id}`);
+        if (!response.ok) throw new Error('Analysis not found');
+        const data = await response.json();
+        setAnalysis(data);
+      } catch (error) {
+        console.error('Error fetching analysis:', error);
+        // TODO: Show error message to user
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalysis();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-sleep-dark-purple">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!analysis) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-sleep-dark-purple">
+        <div className="text-white">Analysis not found</div>
+      </div>
+    );
+  }
 
   const getBadgeColor = (category: string) => {
     switch (category) {
@@ -35,65 +77,36 @@ const Analysis = () => {
     }
   };
 
-  const getAHISeverity = (eventsPerHour: number) => {
-    if (eventsPerHour < 5) return "Normal";
-    if (eventsPerHour < 15) return "Mild";
-    if (eventsPerHour < 30) return "Moderate";
-    return "Severe";
-  };
-
-  // Calculate severity once for use in multiple places
-  const severity = getAHISeverity(parseFloat(eventsPerHour));
-
   const insights = [
     {
       title: "Total Episodes",
-      value: totalEvents,
+      value: analysis.totalEvents,
       description: "Combined snoring and breath events",
       category: "warning"
     },
     {
       title: "Episodes/Hour",
-      value: eventsPerHour,
+      value: analysis.eventsPerHour.toFixed(1),
       description: "Events detected per hour of sleep (AHI)",
-      category: severity === "Severe" ? "severe" : 
-                severity === "Moderate" ? "warning" : 
-                severity === "Mild" ? "warning" : "good"
+      category: analysis.severity === "Severe" ? "severe" : 
+                analysis.severity === "Moderate" ? "warning" : 
+                analysis.severity === "Mild" ? "warning" : "good"
     },
     {
       title: "Recording Length",
-      value: `${Math.floor(duration)}h ${Math.round((duration % 1) * 60)}m`,
+      value: `${Math.floor(analysis.duration)}h ${Math.round((analysis.duration % 1) * 60)}m`,
       description: "Total duration of sleep recording",
       category: "good"
     },
     {
       title: "AHI",
-      value: severity,
+      value: analysis.severity,
       description: "Apnea-Hypopnea Index severity",
-      category: severity === "Severe" ? "severe" : 
-                severity === "Moderate" ? "warning" : 
-                severity === "Mild" ? "warning" : "good"
+      category: analysis.severity === "Severe" ? "severe" : 
+                analysis.severity === "Moderate" ? "warning" : 
+                analysis.severity === "Mild" ? "warning" : "good"
     },
   ];
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const text = event.target?.result as string;
-        const data = JSON.parse(text);
-        if (!Array.isArray(data)) throw new Error("JSON must be an array");
-        setJsonData(data);
-        setFileError(null);
-      } catch (err: any) {
-        setFileError("Invalid JSON file: " + err.message);
-        setJsonData(null);
-      }
-    };
-    reader.readAsText(file);
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-sleep-dark-purple">
@@ -103,22 +116,22 @@ const Analysis = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-start mb-10 gap-6">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">{id === "rec1" ? "Last Night's Sleep" : "Sleep Recording"}</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Sleep Analysis</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-white/70">April 25, 2025</p>
                 <Badge className="bg-sleep-purple hover:bg-sleep-purple">
                   Poor Quality
                 </Badge>
                 <Badge variant="outline" className="border-sleep-purple/50 text-sleep-purple">
-                  {Math.floor(duration)}h {Math.round((duration % 1) * 60)}m
+                  {Math.floor(analysis.duration)}h {Math.round((analysis.duration % 1) * 60)}m
                 </Badge>
                 <Badge className={
-                  severity === "Severe" ? "bg-red-600 hover:bg-red-700" :
-                  severity === "Moderate" ? "bg-orange-600 hover:bg-orange-700" :
-                  severity === "Mild" ? "bg-yellow-600 hover:bg-yellow-700" :
+                  analysis.severity === "Severe" ? "bg-red-600 hover:bg-red-700" :
+                  analysis.severity === "Moderate" ? "bg-orange-600 hover:bg-orange-700" :
+                  analysis.severity === "Mild" ? "bg-yellow-600 hover:bg-yellow-700" :
                   "bg-green-600 hover:bg-green-700"
                 }>
-                  {severity} AHI
+                  {analysis.severity} AHI
                 </Badge>
               </div>
             </div>
@@ -136,19 +149,16 @@ const Analysis = () => {
               title="Overall Noise Level" 
               color="#9b87f5"
               className="xl:col-span-2"
-              data={jsonData}
             />
             <AnalysisChart 
               type="nasal"
               title="Snoring Events" 
               color="#9b87f5"
-              data={jsonData}
             />
             <AnalysisChart 
               type="resp"
               title="Obstructed Breath Events" 
               color="#9b87f5"
-              data={jsonData}
             />
           </div>
           
@@ -216,7 +226,7 @@ const Analysis = () => {
               <div className="bg-sleep-gray/20 backdrop-blur-sm rounded-lg p-5">
                 <h3 className="text-lg font-medium text-white mb-3">Sleep Apnea Management</h3>
                 <p className="text-white/80 mb-4">
-                  Your AHI score of {eventsPerHour} events per hour indicates {severity.toLowerCase()} sleep apnea. Here are immediate steps to take:
+                  Your AHI score of {analysis.eventsPerHour.toFixed(1)} events per hour indicates {analysis.severity.toLowerCase()} sleep apnea. Here are immediate steps to take:
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-start">
@@ -268,4 +278,4 @@ const Analysis = () => {
   );
 };
 
-export default Analysis;
+export default AnalysisPage; 
