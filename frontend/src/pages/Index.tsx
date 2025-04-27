@@ -6,6 +6,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CloudCard from "@/components/CloudCard";
 
+// Add animation styles
+const ambientAnimationStyles = {
+  animation: 'moveAround 20s ease-in-out infinite',
+  filter: 'blur(3rem)',
+  willChange: 'transform',
+};
+
 const Index = () => {
   const features = [
     {
@@ -26,7 +33,15 @@ const Index = () => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
+      {/* Animated background blobs */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute top-[-6rem] left-[-6rem] w-96 h-96 bg-sleep-purple/30 rounded-full blur-3xl animate-ambient-1" />
+        <div className="absolute bottom-[-8rem] right-[-8rem] w-[32rem] h-[32rem] bg-sleep-soft-blue/30 rounded-full blur-3xl animate-ambient-2" />
+        {/* Extra blobs for more organic movement */}
+        <div className="absolute top-[30%] left-[10%] w-80 h-80 bg-sleep-light-purple/20 rounded-full blur-3xl animate-ambient-3" style={{ animationDelay: '10s' }} />
+        <div className="absolute bottom-[20%] right-[30%] w-72 h-72 bg-sleep-sky-blue/20 rounded-full blur-3xl animate-ambient-4" style={{ animationDelay: '20s' }} />
+      </div>
       <Navbar />
       
       <main className="flex-grow">
@@ -55,9 +70,6 @@ const Index = () => {
               </div>
               
               <div className="md:w-1/2 relative">
-                <div className="absolute -top-12 -left-12 w-32 h-32 bg-sleep-purple/20 rounded-full blur-3xl" />
-                <div className="absolute -bottom-12 -right-12 w-40 h-40 bg-sleep-soft-blue/20 rounded-full blur-3xl" />
-                
                 <div className="relative p-1 rounded-2xl bg-gradient-to-br from-sleep-purple/30 to-sleep-soft-blue/30">
                   <div className="bg-sleep-dark-purple rounded-xl overflow-hidden backdrop-blur-sm">
                     <div className="p-6 bg-gradient-to-br from-transparent to-sleep-purple/5">
@@ -72,26 +84,29 @@ const Index = () => {
                       <div className="space-y-4">
                         <div>
                           <div className="h-20 w-full overflow-hidden">
-                            <svg viewBox="0 0 100 20" className="w-full h-full">
-                              <path
-                                fill="none"
-                                stroke="#9b87f5"
-                                strokeWidth="0.5"
-                                d="M0,10 Q10,5 20,10 T40,10 T60,10 T80,10 T100,10"
-                              />
-                              <path
-                                fill="none"
-                                stroke="#9b87f5"
-                                strokeWidth="0.5"
-                                d="M0,10 Q5,15 10,10 T20,10 T30,10 T40,10 T50,14 T60,10 T70,6 T80,10 T90,12 T100,10"
-                              />
-                              <path
-                                fill="none"
-                                stroke="#D3E4FD"
-                                strokeWidth="0.5"
-                                d="M0,10 Q25,18 50,10 T100,10"
-                              />
-                            </svg>
+                            <div className="animate-wave">
+                              <svg viewBox="0 0 200 20" preserveAspectRatio="none" className="w-[200%] h-full">
+                                {/* First set of waves (original) */}
+                                <path
+                                  fill="none"
+                                  stroke="#9b87f5"
+                                  strokeWidth="0.5"
+                                  d="M0,8 Q10,3 20,8 T40,8 T60,8 T80,8 T100,8 Q110,3 120,8 T140,8 T160,8 T180,8 T200,8"
+                                />
+                                <path
+                                  fill="none"
+                                  stroke="#9b87f5"
+                                  strokeWidth="0.5"
+                                  d="M0,8 Q5,13 10,8 T20,8 T30,8 T40,8 T50,12 T60,8 T70,4 T80,8 T90,10 T100,8 Q105,13 110,8 T120,8 T130,8 T140,8 T150,12 T160,8 T170,4 T180,8 T190,10 T200,8"
+                                />
+                                <path
+                                  fill="none"
+                                  stroke="#D3E4FD"
+                                  strokeWidth="0.5"
+                                  d="M0,8 Q25,16 50,8 T100,8 Q125,16 150,8 T200,8"
+                                />
+                              </svg>
+                            </div>
                           </div>
                         </div>
                         

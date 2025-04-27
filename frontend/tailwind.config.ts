@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -7,7 +6,8 @@ export default {
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./src/**/*.{js,ts,jsx,tsx}",
+		"./index.html"
 	],
 	prefix: "",
 	theme: {
@@ -104,13 +104,49 @@ export default {
 				'pulse-soft': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.7' },
-				}
+				},
+				moveAround: {
+					'0%':   { transform: 'translate(0, 0) scale(1)', opacity: '0.7' },
+					'10%':  { transform: 'translate(60px, -40px) scale(1.1)', opacity: '0.8' },
+					'20%':  { transform: 'translate(-30px, 100px) scale(1.05)', opacity: '0.9' },
+					'35%':  { transform: 'translate(-120px, 30px) scale(1.2)', opacity: '0.7' },
+					'50%':  { transform: 'translate(80px, 120px) scale(0.9)', opacity: '0.8' },
+					'65%':  { transform: 'translate(-60px, -60px) scale(1.15)', opacity: '0.9' },
+					'80%':  { transform: 'translate(100px, 20px) scale(1)', opacity: '0.7' },
+					'100%': { transform: 'translate(0, 0) scale(1)', opacity: '0.7' },
+				},
+				moveAround2: {
+					'0%':   { transform: 'translate(0, 0) scale(1)', opacity: '0.6' },
+					'15%':  { transform: 'translate(-60px, 80px) scale(1.12)', opacity: '0.8' },
+					'30%':  { transform: 'translate(120px, -30px) scale(1.05)', opacity: '0.85' },
+					'45%':  { transform: 'translate(30px, 100px) scale(1.18)', opacity: '0.7' },
+					'60%':  { transform: 'translate(-100px, 40px) scale(0.95)', opacity: '0.8' },
+					'75%':  { transform: 'translate(80px, -120px) scale(1.1)', opacity: '0.9' },
+					'100%': { transform: 'translate(0, 0) scale(1)', opacity: '0.6' },
+				},
+				moveAround3: {
+					'0%':   { transform: 'translate(0, 0) scale(1)', opacity: '0.5' },
+					'20%':  { transform: 'translate(100px, 100px) scale(1.15)', opacity: '0.7' },
+					'40%':  { transform: 'translate(-80px, -40px) scale(1.05)', opacity: '0.8' },
+					'60%':  { transform: 'translate(60px, -120px) scale(1.2)', opacity: '0.6' },
+					'80%':  { transform: 'translate(-120px, 60px) scale(0.9)', opacity: '0.7' },
+					'100%': { transform: 'translate(0, 0) scale(1)', opacity: '0.5' },
+				},
+				wave: {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-50%)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'float': 'float 6s ease-in-out infinite',
-				'pulse-soft': 'pulse-soft 4s ease-in-out infinite'
+				'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
+				'ambient-1': 'moveAround 18s ease-in-out infinite',
+				'ambient-2': 'moveAround 22s ease-in-out infinite reverse',
+				'ambient-3': 'moveAround2 28s ease-in-out infinite',
+				'ambient-4': 'moveAround3 32s ease-in-out infinite',
+				'wave': 'wave 15s linear infinite',
 			},
 			backgroundImage: {
 				'gradient-sleep': 'linear-gradient(to bottom right, #1A1F2C, #403E43)',

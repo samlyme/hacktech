@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import React from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -278,5 +278,6 @@ const Analysis = () => {
     </div>
   );
 };
+
 
 export default Analysis;

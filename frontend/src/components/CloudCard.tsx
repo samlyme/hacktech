@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 
 interface CloudCardProps {
@@ -9,7 +8,7 @@ interface CloudCardProps {
 const CloudCard = ({ children, className }: CloudCardProps) => {
   return (
     <div className={cn(
-      "cloud-card p-6 animate-float",
+      "cloud-card p-6",
       className
     )}>
       {children}
