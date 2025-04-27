@@ -1,0 +1,16 @@
+state,start_s,end_s,duration
+Moving,0.0,0.33,0.33
+Stationary,0.33,2.23,1.9
+Moving,2.23,2.53,0.3
+Stationary,2.53,4.47,1.93
+Moving,4.47,4.87,0.4
+Stationary,4.87,6.47,1.6
+Moving,6.47,7.53,1.07
+Stationary,7.53,8.53,1.0
+Moving,8.53,13.23,4.7
+Stationary,13.23,13.9,0.67
+Moving,13.9,14.9,1.0
+Stationary,14.9,15.23,0.33
+Moving,15.23,16.23,1.0
+Stationary,16.23,18.83,2.6
+Moving,18.83,19.37,0.53
