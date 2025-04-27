@@ -3,12 +3,46 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { createUserUsersPost } from "@/client";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const handleSignUpClick = async (e) => {
+    e.preventDefault()
+
+    if (!username || !password) {
+      return;
+    }
+
+    if (password != confirmPassword) {
+      return;
+    }
+
+    console.log("clicked");
+
+    try {
+      const res = await createUserUsersPost({
+        body: {
+          email: email,
+          username: username,
+          password: password
+        }
+      })
+      console.log(res);
+
+      // Optionally, redirect user to a protected route
+      // For example: history.push('/dashboard');
+    } catch (err) {
+      console.error(err)
+    } finally {
+      console.log('done');
+
+    }
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -21,6 +55,14 @@ const SignUp = () => {
               placeholder="Username"
               value={username}
               onChange={e => setUsername(e.target.value)}
+              className="mb-3 w-64 px-4 py-2 rounded bg-sleep-dark-purple/60 border border-sleep-purple/30 text-white focus:outline-none focus:ring-2 focus:ring-sleep-purple"
+              autoComplete="username"
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               className="mb-3 w-64 px-4 py-2 rounded bg-sleep-dark-purple/60 border border-sleep-purple/30 text-white focus:outline-none focus:ring-2 focus:ring-sleep-purple"
               autoComplete="username"
             />
@@ -40,7 +82,7 @@ const SignUp = () => {
               className="mb-4 w-64 px-4 py-2 rounded bg-sleep-dark-purple/60 border border-sleep-purple/30 text-white focus:outline-none focus:ring-2 focus:ring-sleep-purple"
               autoComplete="new-password"
             />
-            <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white w-64 mb-2">
+            <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white w-64 mb-2" onClick={handleSignUpClick}>
               Sign up
             </Button>
           </form>
