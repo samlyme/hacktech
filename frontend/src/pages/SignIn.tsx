@@ -8,7 +8,9 @@ import { signIn } from "@/services/auth";
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSignInClick = async () => {
+  const handleSignInClick = async (e) => {
+    e.preventDefault()
+
     if (!username || !password) {
       return;
     }

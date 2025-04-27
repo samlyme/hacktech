@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API endpoint for token generation
-const API_URL = import.meta.env.VITE_BACKEND_URL + '/token';
+const API_URL = import.meta.env.VITE_BACKEND_URL + 'token/';
 
 // Store JWT token in local storage
 export const storeToken = (token: string) => {
@@ -21,14 +21,27 @@ export const removeToken = () => {
 // Sign in with username and password
 export const signIn = async (username: string, password: string) => {
   try {
-    const response = await axios.post(API_URL, {
-      username: username,
-      password: password,
-    });
-
-    const { access_token } = response.data;
+    const response = await axios.post(
+        API_URL,
+        new URLSearchParams({
+          'grant_type': 'password',
+          'username': username,
+          'password': password,
+          'scope': '',
+          'client_id': 'string',
+          'client_secret': 'string'
+        }),
+        {
+          headers: {
+            'accept': 'application/json'
+          }
+        }
+      );
+      
+      console.log(response);
+      
+      const access_token = response.data.access_token
     storeToken(access_token);
-
     return access_token;
   } catch (error) {
     throw new Error('Invalid credentials');
