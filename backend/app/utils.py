@@ -9,7 +9,7 @@ from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from sqlmodel import select
 
-from app.model import TokenData, User, UserBase 
+from app.model import TokenData, User, UserBase, UserPublic 
 from app.db import SessionDep
 
 load_dotenv()
@@ -63,8 +63,10 @@ async def get_current_user(session: SessionDep, token: Annotated[str, Depends(oa
         token_data = TokenData(username=username)
     except InvalidTokenError:
         raise credentials_exception
+
     statement = select(User).where(User.username == username)
     user = session.exec(statement).first()
+    print(user)
     if user is None:
         raise credentials_exception
-    return UserBase(username=user.username, email=user.email)
+    return UserPublic(username=user.username, email=user.email, id=user.id) # type: ignore
