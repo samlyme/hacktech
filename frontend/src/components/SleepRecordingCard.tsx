@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
@@ -11,7 +10,7 @@ interface SleepRecordingCardProps {
   title: string;
   date: string;
   duration: number;
-  quality: number;
+  AHI: number;
   className?: string;
 }
 
@@ -20,13 +19,13 @@ const SleepRecordingCard = ({
   title,
   date,
   duration,
-  quality,
+  AHI,
   className,
 }: SleepRecordingCardProps) => {
-  const qualityColor = 
-    quality >= 80 ? "bg-green-500" : 
-    quality >= 60 ? "bg-yellow-500" : 
-    "bg-red-500";
+  const ahiColor = 
+    AHI >= 80 ? "bg-red-500" : 
+    AHI >= 60 ? "bg-yellow-500" : 
+    "bg-green-500";
   
   return (
     <Card className={cn(
@@ -53,13 +52,13 @@ const SleepRecordingCard = ({
           
           <div>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-white/80 text-sm">Sleep Quality</span>
-              <span className="text-white font-medium">{quality}%</span>
+              <span className="text-white/80 text-sm">AHI</span>
+              <span className="text-white font-medium">{AHI}</span>
             </div>
             <div className="h-2 w-full bg-sleep-gray rounded-full overflow-hidden">
               <div 
-                className={`h-full ${qualityColor} transition-all`}
-                style={{ width: `${quality}%` }}
+                className={`h-full ${ahiColor} transition-all`}
+                style={{ width: `${AHI}%` }}
               />
             </div>
           </div>
