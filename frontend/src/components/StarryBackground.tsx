@@ -8,6 +8,10 @@ interface StarConfig {
   opacity: number;
 }
 
+interface StarryBackgroundProps {
+  showBlobs?: boolean;
+}
+
 const generateStarPlacements = (count: number): StarConfig[] => {
   const stars: StarConfig[] = [];
   for (let i = 0; i < count; i++) {
@@ -34,7 +38,7 @@ const generateStarPlacements = (count: number): StarConfig[] => {
   return stars;
 };
 
-const StarryBackground = () => {
+const StarryBackground = ({ showBlobs = true }: StarryBackgroundProps) => {
   const starsRef = useRef<HTMLDivElement>(null);
   const starConfigs = generateStarPlacements(8); // Generate 8 random star placements
 
@@ -58,16 +62,20 @@ const StarryBackground = () => {
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10">
-      <div className="absolute top-[-6rem] left-[-6rem] w-96 h-96 bg-sleep-purple/30 rounded-full blur-3xl animate-ambient-1" />
-      <div className="absolute bottom-[-8rem] right-[-8rem] w-[32rem] h-[32rem] bg-sleep-soft-blue/30 rounded-full blur-3xl animate-ambient-2" />
-      <div
-        className="absolute top-[30%] left-[10%] w-80 h-80 bg-sleep-light-purple/20 rounded-full blur-3xl animate-ambient-3"
-        style={{ animationDelay: "10s" }}
-      />
-      <div
-        className="absolute bottom-[20%] right-[30%] w-72 h-72 bg-sleep-sky-blue/20 rounded-full blur-3xl animate-ambient-4"
-        style={{ animationDelay: "20s" }}
-      />
+      {showBlobs && (
+        <>
+          <div className="absolute top-[-6rem] left-[-6rem] w-96 h-96 bg-sleep-purple/30 rounded-full blur-3xl animate-ambient-1" />
+          <div className="absolute bottom-[-8rem] right-[-8rem] w-[32rem] h-[32rem] bg-sleep-soft-blue/30 rounded-full blur-3xl animate-ambient-2" />
+          <div
+            className="absolute top-[30%] left-[10%] w-80 h-80 bg-sleep-light-purple/20 rounded-full blur-3xl animate-ambient-3"
+            style={{ animationDelay: "10s" }}
+          />
+          <div
+            className="absolute bottom-[20%] right-[30%] w-72 h-72 bg-sleep-sky-blue/20 rounded-full blur-3xl animate-ambient-4"
+            style={{ animationDelay: "20s" }}
+          />
+        </>
+      )}
       
       {/* Decorative stars */}
       <div ref={starsRef}>

@@ -5,6 +5,7 @@ import { AudioLines, NotebookIcon, LineChart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CloudCard from "@/components/CloudCard";
+import StarryBackground from "@/components/StarryBackground";
 
 const Index = () => {
   const features = [
@@ -30,20 +31,7 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      {/* Animated background blobs */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute top-[-6rem] left-[-6rem] w-96 h-96 bg-sleep-purple/30 rounded-full blur-3xl animate-ambient-1" />
-        <div className="absolute bottom-[-8rem] right-[-8rem] w-[32rem] h-[32rem] bg-sleep-soft-blue/30 rounded-full blur-3xl animate-ambient-2" />
-        {/* Extra blobs for more organic movement */}
-        <div
-          className="absolute top-[30%] left-[10%] w-80 h-80 bg-sleep-light-purple/20 rounded-full blur-3xl animate-ambient-3"
-          style={{ animationDelay: "10s" }}
-        />
-        <div
-          className="absolute bottom-[20%] right-[30%] w-72 h-72 bg-sleep-sky-blue/20 rounded-full blur-3xl animate-ambient-4"
-          style={{ animationDelay: "20s" }}
-        />
-      </div>
+      <StarryBackground />
       <Navbar />
 
       <main className="flex-grow">

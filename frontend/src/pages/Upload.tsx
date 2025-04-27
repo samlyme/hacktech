@@ -2,10 +2,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import UploadForm from "@/components/UploadForm";
 import { CloudMoon } from "lucide-react";
+import StarryBackground from "@/components/StarryBackground";
 
 const Upload = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      <StarryBackground showBlobs={false} />
       <Navbar />
 
       <main className="flex-grow py-12">
