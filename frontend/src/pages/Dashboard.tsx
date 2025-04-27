@@ -15,28 +15,28 @@ const Dashboard = () => {
       title: "Last Night's Sleep",
       date: "April 25, 2025",
       duration: 7.2,
-      quality: 82,
+      AHI: 99,
     },
     {
       id: "rec2",
       title: "Nap After Work",
       date: "April 24, 2025",
       duration: 1.5,
-      quality: 68,
+      AHI: 82,
     },
     {
       id: "rec3",
-      title: "Night with Storm",
+      title: "Night with CPAP",
       date: "April 23, 2025",
       duration: 6.8,
-      quality: 62,
+      AHI: 14,
     },
     {
       id: "rec4",
       title: "Regular Night",
       date: "April 22, 2025",
       duration: 8.1,
-      quality: 91,
+      AHI: 68,
     },
   ];
 
@@ -51,15 +51,20 @@ const Dashboard = () => {
     { time: "Apr 25", value: 82 },
   ];
 
-  const sleepDurationData = [
-    { time: "Apr 19", value: 6.9 },
-    { time: "Apr 20", value: 7.5 },
-    { time: "Apr 21", value: 7.8 },
-    { time: "Apr 22", value: 8.1 },
-    { time: "Apr 23", value: 6.8 },
-    { time: "Apr 24", value: 1.5 },
-    { time: "Apr 25", value: 7.2 },
-  ];
+  // Data at a Glance for the most recent data
+  const snoringEvents = 71;
+  const breathEvents = 421;
+  const totalEvents = snoringEvents + breathEvents;
+  const duration = 4.97;
+  const eventsPerHour = (totalEvents / duration).toFixed(1);
+  const getAHISeverity = (eventsPerHour) => {
+    const eph = parseFloat(eventsPerHour);
+    if (eph < 5) return "Normal";
+    if (eph < 15) return "Mild";
+    if (eph < 30) return "Moderate";
+    return "Severe";
+  };
+  const severity = getAHISeverity(eventsPerHour);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -89,15 +94,33 @@ const Dashboard = () => {
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
             <AnalysisChart
-              data={sleepQualityData}
-              title="Sleep Quality Trend"
+              key="dashboard-mic"
+              type="mic"
+              title="Overall Noise Level"
               color="#9b87f5"
             />
-            <AnalysisChart
-              data={sleepDurationData}
-              title="Sleep Duration (hours)"
-              color="#33C3F0"
-            />
+            {/* Data at a Glance Card */}
+            <div className="bg-sleep-charcoal border-sleep-purple/20 rounded-lg p-6 flex flex-col justify-center">
+              <h3 className="text-lg font-semibold text-white mb-4">Data at a Glance</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-sleep-purple text-sm font-medium mb-1">Snoring Events</div>
+                  <div className="text-white text-2xl font-bold">{snoringEvents}</div>
+                </div>
+                <div>
+                  <div className="text-sleep-purple text-sm font-medium mb-1">Obstructed Breath Events</div>
+                  <div className="text-white text-2xl font-bold">{breathEvents}</div>
+                </div>
+                <div>
+                  <div className="text-sleep-purple text-sm font-medium mb-1">Events/Hour</div>
+                  <div className="text-white text-2xl font-bold">{eventsPerHour}</div>
+                </div>
+                <div>
+                  <div className="text-sleep-purple text-sm font-medium mb-1">AHI</div>
+                  <div className="text-white text-2xl font-bold">{severity}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Recordings Section */}
@@ -113,7 +136,7 @@ const Dashboard = () => {
                   title={recording.title}
                   date={recording.date}
                   duration={recording.duration}
-                  quality={recording.quality}
+                  AHI={recording.AHI}
                 />
               ))}
             </div>
