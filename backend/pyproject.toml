@@ -9,6 +9,7 @@ dependencies = [
     "authlib>=1.5.2",
     "cryptography>=44.0.2",
     "dotenv>=0.9.9",
+    "fastapi-cli>=0.0.7",
     "fastapi[standard]>=0.115.12",
     "google-auth>=2.39.0",
     "greenlet>=3.2.1",
