@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 from sqlmodel import Field, SQLModel
 
@@ -38,6 +39,8 @@ class Recording(RecordingBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id")
     analysis: str | None = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
 
 class RecordingUpdate(RecordingBase):
     name: str | None = None
