@@ -15,14 +15,6 @@ const SignUp = () => {
       <main className="flex-grow flex items-center justify-center bg-sleep-dark-purple">
         <div className="bg-sleep-dark-purple/80 border border-sleep-purple/20 rounded-xl shadow-lg p-10 flex flex-col items-center w-full max-w-md">
           <h1 className="text-3xl font-bold text-white mb-6">Sign up for Nea</h1>
-          <Button size="lg" className="bg-sleep-purple hover:bg-sleep-light-purple text-white w-64 mb-4">
-            Sign up with Google
-          </Button>
-          <div className="flex items-center w-full my-4">
-            <div className="flex-grow h-px bg-sleep-purple/30" />
-            <span className="mx-3 text-white/60 text-sm">or</span>
-            <div className="flex-grow h-px bg-sleep-purple/30" />
-          </div>
           <form className="w-full flex flex-col items-center">
             <input
               type="text"
