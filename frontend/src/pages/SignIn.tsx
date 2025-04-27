@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginForAccessTokenTokenPost } from "@/client";
+import { useAuth } from "@/context/AuthContext";
 
 
 const SignIn = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSignInClick = async (e) => {
@@ -26,6 +29,9 @@ const SignIn = () => {
         }
       })
       console.log(res);
+
+      login(res.data.access_token)
+      navigate("/dashboard")
 
       // Optionally, redirect user to a protected route
       // For example: history.push('/dashboard');

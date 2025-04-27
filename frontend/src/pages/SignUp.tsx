@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserUsersPost } from "@/client";
 
 const SignUp = () => {
@@ -10,6 +10,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUpClick = async (e) => {
     e.preventDefault()
@@ -34,13 +35,12 @@ const SignUp = () => {
       })
       console.log(res);
 
-      // Optionally, redirect user to a protected route
-      // For example: history.push('/dashboard');
+
+      navigate("/sign-in")
     } catch (err) {
       console.error(err)
     } finally {
       console.log('done');
-
     }
   }
   return (
