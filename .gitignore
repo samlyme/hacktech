@@ -24,3 +24,4 @@ TestResults.xml
 .venv
 signal.csv
 __pycache__
+signal.csv
